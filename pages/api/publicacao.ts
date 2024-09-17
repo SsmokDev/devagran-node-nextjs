@@ -6,6 +6,7 @@ import {conectarMongoDB} from '../../middlewares/conectarMongoDB';
 import {validarTokenJWT} from '../../middlewares/validarTokenJWT';
 import {PublicacaoModel} from '../../models/PublicacaoModel';
 import {UsuarioModel} from '../../models/UsuarioModel';
+import { politicaCORS } from '@/middlewares/politicaCORS';
 
 const handler = nc()
     .use(upload.single('file'))
@@ -40,6 +41,9 @@ const handler = nc()
                 data : new Date()
             }
 
+            usuario.publicacoes++;
+            await UsuarioModel.findByIdAndUpdate({_id: usuario._id}, usuario);
+
             await PublicacaoModel.create(publicacao);
             return res.status(200).json({msg: 'Publicacao criada com sucesso! '});
 
@@ -55,4 +59,4 @@ export const config = {
     }
 }
 
-export default validarTokenJWT(conectarMongoDB(handler));
+export default politicaCORS(validarTokenJWT(conectarMongoDB(handler)));
