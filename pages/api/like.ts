@@ -4,6 +4,7 @@ import { conectarMongoDB } from '@/middlewares/conectarMongoDB';
 import { validarTokenJWT } from '@/middlewares/validarTokenJWT';
 import { PublicacaoModel } from '@/models/PublicacaoModel';
 import { UsuarioModel } from '@/models/UsuarioModel';
+import { politicaCORS } from '@/middlewares/politicaCORS';
 
 const likeEndpoint = async (req: NextApiRequest, res: NextApiResponse<RespostaPadraoMsg>) =>{
 
@@ -42,4 +43,4 @@ const likeEndpoint = async (req: NextApiRequest, res: NextApiResponse<RespostaPa
     }
 }
 
-export default validarTokenJWT(conectarMongoDB(likeEndpoint));
+export default politicaCORS(validarTokenJWT(conectarMongoDB(likeEndpoint)));
